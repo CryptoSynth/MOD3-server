@@ -22,19 +22,35 @@ app.use(helmet());
 app.use(compression());
 
 //Mongoose Connection
+let db = config.get('db');
 
-mongoose
-  .connect(config.get('db'), {
-    useNewUrlParser: true,
-    useCreateIndex: true,
-    useUnifiedTopology: true
-  })
-  .then(() => {
-    console.log('MongoDB connection esablished successfully');
-  })
-  .catch(() => {
-    console.log('MongoDb could not connect');
-  });
+if (process.env.NODE_ENV === 'production') {
+  mongoose
+    .connect(db, {
+      useNewUrlParser: true,
+      useCreateIndex: true,
+      useUnifiedTopology: true
+    })
+    .then(() => {
+      console.log('MongoDB Production connection established successfully');
+    })
+    .catch(() => {
+      console.log('MongoDb Production could not connect');
+    });
+} else {
+  mongoose
+    .connect(db, {
+      useNewUrlParser: true,
+      useCreateIndex: true,
+      useUnifiedTopology: true
+    })
+    .then(() => {
+      console.log('MongoDB Developement connection established successfully');
+    })
+    .catch(() => {
+      console.log('MongoDb Developement could not connect');
+    });
+}
 
 //Use MOD3 Routes
 app.use('/contacts', contactRouter);
