@@ -1,4 +1,4 @@
 {
   "name": "PROD MOD3 API",
-  "db": "mod3_db"
+  "db": "mongodb+srv://client:mod3@cluster0-6z1yj.gcp.mongodb.net/test?retryWrites=true&w=majority"
 }
