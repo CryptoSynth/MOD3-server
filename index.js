@@ -30,9 +30,13 @@ mongoose.connect(config.get('db'), {
 });
 
 const connection = mongoose.connection;
-connection.once('open', () => {
-  console.log('MongoDB database connection esablished successfully');
-});
+connection
+  .then(() => {
+    console.log('MongoDB connection esablished successfully');
+  })
+  .catch(() => {
+    console.log('MongoDb could not connect');
+  });
 
 //Use MOD3 Routes
 app.use('/contacts', contactRouter);
