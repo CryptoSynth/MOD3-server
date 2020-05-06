@@ -22,8 +22,8 @@ app.use(helmet());
 app.use(compression());
 
 //Mongoose Connection
-const uri = process.env.ATLAS_URI;
-mongoose.connect(uri, {
+
+mongoose.connect(config.get('db'), {
   useNewUrlParser: true,
   useCreateIndex: true,
   useUnifiedTopology: true
