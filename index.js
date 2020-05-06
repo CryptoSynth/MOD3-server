@@ -28,14 +28,11 @@ console.log(db);
 
 if (process.env.NODE_ENV === 'production') {
   mongoose
-    .connect(
-      'mongodb+srv://client:mod3@cluster0-6z1yj.gcp.mongodb.net/test?retryWrites=true&w=majority',
-      {
-        useNewUrlParser: true,
-        useCreateIndex: true,
-        useUnifiedTopology: true
-      }
-    )
+    .connect(db, {
+      useNewUrlParser: true,
+      useCreateIndex: true,
+      useUnifiedTopology: true
+    })
     .then(() => {
       console.log('MongoDB Production connection established successfully');
     })
