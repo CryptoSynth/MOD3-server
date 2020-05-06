@@ -23,14 +23,12 @@ app.use(compression());
 
 //Mongoose Connection
 
-mongoose.connect(config.get('db'), {
-  useNewUrlParser: true,
-  useCreateIndex: true,
-  useUnifiedTopology: true
-});
-
-const connection = mongoose.connection;
-connection
+mongoose
+  .connect(config.get('db'), {
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useUnifiedTopology: true
+  })
   .then(() => {
     console.log('MongoDB connection esablished successfully');
   })
