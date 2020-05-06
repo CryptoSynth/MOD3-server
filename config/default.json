@@ -1,3 +1,4 @@
 {
-  "name": "MOD3 API"
+  "name": "MOD3 API",
+  "db": "mongodb://localhost:27017/"
 }
