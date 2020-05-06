@@ -26,7 +26,11 @@ let db = config.get('db');
 
 if (process.env.NODE_ENV === 'production') {
   mongoose
-    .connect(db)
+    .connect(db, {
+      useNewUrlParser: true,
+      useCreateIndex: true,
+      useUnifiedTopology: true
+    })
     .then(() => {
       console.log('MongoDB Production connection established successfully');
     })
@@ -35,7 +39,11 @@ if (process.env.NODE_ENV === 'production') {
     });
 } else {
   mongoose
-    .connect(db)
+    .connect(db, {
+      useNewUrlParser: true,
+      useCreateIndex: true,
+      useUnifiedTopology: true
+    })
     .then(() => {
       console.log('MongoDB Developement connection established successfully');
     })
