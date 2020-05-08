@@ -26,7 +26,6 @@ app.use(compression());
 let db = config.get('db');
 let client = new MongoClient(db, {
   useNewUrlParser: true,
-  useCreateIndex: true,
   useUnifiedTopology: true
 });
 
