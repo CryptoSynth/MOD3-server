@@ -4,6 +4,7 @@ const error = require('./middleware/error.middleware');
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
+const MongoClient = require('mongodb').MongoClient;
 const helmet = require('helmet');
 const compression = require('compression');
 
@@ -23,14 +24,15 @@ app.use(compression());
 
 //Mongoose Connection
 let db = config.get('db');
+let client = new MongoClient(db, {
+  useNewUrlParser: true,
+  useCreateIndex: true,
+  useUnifiedTopology: true
+});
 
 if (process.env.NODE_ENV === 'production') {
-  mongoose
-    .connect(db, {
-      useNewUrlParser: true,
-      useCreateIndex: true,
-      useUnifiedTopology: true
-    })
+  client
+    .connect()
     .then(() => {
       console.log('MongoDB Production connection established successfully');
     })
@@ -38,12 +40,8 @@ if (process.env.NODE_ENV === 'production') {
       console.log('MongoDb Production could not connect');
     });
 } else {
-  mongoose
-    .connect(db, {
-      useNewUrlParser: true,
-      useCreateIndex: true,
-      useUnifiedTopology: true
-    })
+  client
+    .connect()
     .then(() => {
       console.log('MongoDB Developement connection established successfully');
     })
