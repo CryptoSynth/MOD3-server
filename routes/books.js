@@ -64,7 +64,8 @@ router.post('/add', async (req, res) => {
       .status(400)
       .send(
         `Sorry, ${moment(req.body.startTime).format('hh:mm A')} - ${moment(
-          req.body.endTime
+          req.body.endTime,
+          'x'
         ).format('hh:mm A')} @ ${moment(req.body.date, 'YYYY-MM-DD').format(
           'MM/DD/YYYY'
         )} is unavailiable. Please choose another time or date.`
