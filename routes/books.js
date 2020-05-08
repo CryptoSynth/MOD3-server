@@ -16,11 +16,15 @@ router.post('/add', async (req, res) => {
   const { error } = validateBook(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
+  let book = await Book.findOne({ email: req.body.email });
+  if (book)
+    return res
+      .status(400)
+      .send('Looks like you already booked an appointment!');
+
   const start = req.body.startTime;
   const end = req.body.endTime;
-
-  console.log(typeof start);
-  console.log(end);
+  const date = req.body.date;
 
   const isOverlap = await Book.findOne({
     $or: [
@@ -28,12 +32,28 @@ router.post('/add', async (req, res) => {
         $and: [
           { startTime: { $gte: start } },
           { startTime: { $lte: end } },
-          { date: { $eq: req.body.date } }
-        ],
+          { date: { $eq: date } }
+        ]
+      },
+      {
         $and: [
           { endTime: { $gte: start } },
           { endTime: { $lte: end } },
-          { date: { $eq: req.body.date } }
+          { date: { $eq: date } }
+        ]
+      },
+      {
+        $and: [
+          { startTime: { $gte: start } },
+          { endTime: { $lte: end } },
+          { date: { $eq: date } }
+        ]
+      },
+      {
+        $and: [
+          { startTime: { $lte: start } },
+          { endTime: { $gte: end } },
+          { date: { $eq: date } }
         ]
       }
     ]
@@ -49,12 +69,6 @@ router.post('/add', async (req, res) => {
           'MM/DD/YYYY'
         )} is unavailiable. Please choose another time or date.`
       );
-
-  let book = await Book.findOne({ email: req.body.email });
-  if (book)
-    return res
-      .status(400)
-      .send('Looks like you already booked an appointment!');
 
   book = new Book({
     email: req.body.email,

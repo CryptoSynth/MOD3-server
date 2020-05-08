@@ -24,8 +24,6 @@ app.use(compression());
 //Mongoose Connection
 let db = config.get('db');
 
-console.log(db);
-
 if (process.env.NODE_ENV === 'production') {
   mongoose
     .connect(db, {
