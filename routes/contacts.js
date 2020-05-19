@@ -4,6 +4,7 @@ const express = require('express');
 //load router
 const router = express.Router();
 
+//GET /
 router.get('/', async (req, res) => {
   const contact = await Contact.find();
   res.send(contact);

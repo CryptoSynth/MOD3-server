@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Joi = require('@hapi/joi');
 
-//Create Exercise Schema
+//Create Contact Schema
 const contactSchema = new mongoose.Schema({
   firstName: {
     type: String,
@@ -31,7 +31,7 @@ const contactSchema = new mongoose.Schema({
   }
 });
 
-//Model Exercuse Schema
+//Model Contact Schema
 const Contact = mongoose.model('Contact', contactSchema);
 
 //Validate Contact Request

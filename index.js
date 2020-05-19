@@ -10,9 +10,9 @@ const compression = require('compression');
 //import routes
 const contactRouter = require('./routes/contacts');
 const bookRouter = require('./routes/books');
+const userRouter = require('./routes/users');
 
 //Configure ENV Variables
-
 const app = express();
 
 //middleware
@@ -22,39 +22,28 @@ app.use(helmet());
 app.use(compression());
 
 //Mongoose Connection
-let db = config.get('db');
+const db = config.get('db');
 
-if (process.env.NODE_ENV === 'production') {
-  mongoose
-    .connect(db, {
-      useNewUrlParser: true,
-      useCreateIndex: true,
-      useUnifiedTopology: true
-    })
-    .then(() => {
-      console.log('MongoDB Production connection established successfully');
-    })
-    .catch(() => {
-      console.log('MongoDb Production could not connect');
-    });
-} else {
-  mongoose
-    .connect(db, {
-      useNewUrlParser: true,
-      useCreateIndex: true,
-      useUnifiedTopology: true
-    })
-    .then(() => {
-      console.log('MongoDB Developement connection established successfully');
-    })
-    .catch(() => {
-      console.log('MongoDb Developement could not connect');
-    });
-}
+const envType =
+  process.env.NODE_ENV === 'production' ? 'Development' : 'Production';
+
+mongoose
+  .connect(db, {
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useUnifiedTopology: true
+  })
+  .then(() => {
+    console.log(`MongoDB ${envType} connection established successfully`);
+  })
+  .catch(() => {
+    console.log(`MongoDB ${envType} could not connect`);
+  });
 
 //Use MOD3 Routes
 app.use('/contacts', contactRouter);
 app.use('/books', bookRouter);
+app.use('/users', userRouter);
 
 //error handling middleware
 app.use(error);

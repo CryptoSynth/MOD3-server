@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Joi = require('@hapi/joi');
 
-//Create UserSchema
+//Create Book Scehma
 const bookSchema = new mongoose.Schema({
   email: {
     type: String,
@@ -23,7 +23,7 @@ const bookSchema = new mongoose.Schema({
   }
 });
 
-//Model User Schema
+//Model Book Schema
 const Book = mongoose.model('Book', bookSchema);
 
 //Validate Book Request
