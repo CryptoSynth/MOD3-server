@@ -1,3 +1,4 @@
+const bcrypt = require('bcrypt');
 const { User, validateUser } = require('../models/user.model');
 const express = require('express');
 
@@ -12,15 +13,26 @@ router.post('/signup', async (req, res) => {
   let user = await User.findOne({ email: req.body.email });
   if (user) return res.status(400).send('User already signed up!');
 
+  //generate salt and hash user password
+  const salt = await bcrypt.genSalt(10);
+  const secret = await bcrypt.hash(req.body.password, salt);
+
   user = new User({
     name: req.body.name,
     email: req.body.email,
-    password: req.body.password
+    password: secret
   });
 
   await user.save();
 
-  res.send(user);
+  //generate JWT
+  const token = user.generateAuthToken();
+
+  //set header w/ token and user info
+  res.header('x-auth-token', token).send({
+    name: user.name,
+    email: user.email
+  });
 });
 
 module.exports = router;

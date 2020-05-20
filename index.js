@@ -11,6 +11,7 @@ const compression = require('compression');
 const contactRouter = require('./routes/contacts');
 const bookRouter = require('./routes/books');
 const userRouter = require('./routes/users');
+const authRouter = require('./routes/auth');
 
 //Configure ENV Variables
 const app = express();
@@ -21,11 +22,18 @@ app.use(express.json());
 app.use(helmet());
 app.use(compression());
 
+//JWT Secret Key configured
+const jwtPrivateKey = config.get('jwtPrivateKey');
+if (!jwtPrivateKey) {
+  console.log('FATAL ERROR: jwtPrivateKey is not defined!');
+  process.exit(1);
+}
+
 //Mongoose Connection
 const db = config.get('db');
 
 const envType =
-  process.env.NODE_ENV === 'production' ? 'Development' : 'Production';
+  process.env.NODE_ENV === 'production' ? 'Production' : 'Development';
 
 mongoose
   .connect(db, {
@@ -38,12 +46,14 @@ mongoose
   })
   .catch(() => {
     console.log(`MongoDB ${envType} could not connect`);
+    process.exit(1);
   });
 
 //Use MOD3 Routes
 app.use('/contacts', contactRouter);
 app.use('/books', bookRouter);
 app.use('/users', userRouter);
+app.use('/auth', authRouter);
 
 //error handling middleware
 app.use(error);

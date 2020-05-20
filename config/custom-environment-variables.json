@@ -1,3 +1,4 @@
 {
-  "db": "mod3_db"
+  "db": "mod3_db",
+  "jwtPrivateKey": "mod3_jwtPrivateKey"
 }
